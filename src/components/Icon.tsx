@@ -19,6 +19,7 @@ const paths: Record<string, string> = {
   menu: 'M4 7h16M4 12h16M4 17h16',
   close: 'm6 6 12 12M18 6 6 18',
   external: 'M14 5h5v5M19 5l-8 8M18 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4',
+  arrow: 'M5 12h14m-5-5 5 5-5 5',
   plus: 'M12 5v14M5 12h14',
   minus: 'M5 12h14',
   tiktok: 'M14 4v10.5a3.5 3.5 0 1 1-3.5-3.5M14 4c.3 2.3 1.8 4 4.5 4.2',
@@ -53,9 +54,9 @@ export function Icon({
 export function BubbleMark({ size = 28 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <circle cx="30" cy="35" r="17" stroke="#E6DFD0" strokeWidth="2.5" />
-      <path d="M21 31a10 10 0 0 1 8-8" stroke="#C2AD88" strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="47" cy="18" r="6" stroke="#C2AD88" strokeWidth="2.2" />
+      <circle cx="30" cy="35" r="17" stroke="#E6EDFF" strokeWidth="2.5" />
+      <path d="M21 31a10 10 0 0 1 8-8" stroke="#6FB0FF" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="47" cy="18" r="6" stroke="#6FB0FF" strokeWidth="2.2" />
     </svg>
   )
 }

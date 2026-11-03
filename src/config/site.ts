@@ -1,6 +1,6 @@
 /**
  * Single source of truth for all product copy, release info, media and links.
- * Everything here was read from the TikTokBubbles.dll itself (UI strings, plugin
+ * Facts were read from the TikTokBubbles.dll itself (UI strings, plugin
  * metadata). Anything unknown is `null` and the matching UI is hidden.
  */
 
@@ -43,6 +43,7 @@ export interface SiteConfig {
   version: string | null
   status: string
   author: { name: string; handle: string }
+  host: { name: string; link: string | null }
   links: {
     /** Direct download URL for the mod. null = no download published yet. */
     download: string | null
@@ -73,19 +74,20 @@ export interface SiteConfig {
 
 export const site: SiteConfig = {
   name: 'TikTokBubbles',
-  tagline: 'Your live stream, floating in front of you.',
+  tagline: 'Pop your stream into Gorilla Tag.',
   description:
-    'A BepInEx mod for Gorilla Tag that turns live TikTok and YouTube activity — followers, gifts and chat — into calm, readable bubbles in your field of view.',
+    'A BepInEx mod for Gorilla Tag that turns your live TikTok and YouTube followers, gifts and chat into floating bubbles right in front of you. Your chat, but make it bubbly.',
   url: 'https://ttb.krox07.owenis.me',
   version: '2.15',
   status: 'Early access',
   author: { name: 'Krox', handle: '@krox07' },
+  host: { name: 'Owen', link: null },
   links: {
     download: null, // e.g. 'https://github.com/you/repo/releases/latest/download/TikTokBubbles.dll'
     tiktok: 'https://www.tiktok.com/@krox07',
     discord: null,
     support: null,
-    source: null,
+    source: 'https://github.com/immcrab/TikTokBubbles-site',
   },
   release: {
     fileName: 'TikTokBubbles.dll',
@@ -103,113 +105,113 @@ export const site: SiteConfig = {
   features: [
     {
       icon: 'bubble',
-      title: 'Live stream bubbles',
+      title: 'Stream, but bubbly',
       description:
-        'TikTok and YouTube activity appears as floating bubbles, with an optional platform label on each one.',
+        'TikTok and YouTube activity floats up as bubbles in front of you, with an optional platform label so you know who is who.',
     },
     {
       icon: 'gift',
       title: 'Gifts and Super Chats',
       description:
-        'Gifts and YouTube Super Chats get their own treatment, with a big-gift showcase and a threshold to hide small gifts.',
+        'Gifts and Super Chats get their own moment, including a big-gift showcase. Tired of tiny gifts? Set a threshold to hide them.',
     },
     {
       icon: 'follower',
       title: 'Follower counter',
       description:
-        'A live follower count with a floating +1 for each new follower and a CONGRATS moment at every goal.',
+        'A live follower count, a floating +1 for every new follower, and a big CONGRATS when you hit a goal.',
     },
     {
       icon: 'wrist',
       title: 'Wrist menu',
       description:
-        'Connect your accounts, tune settings and send chat messages from a menu on your wrist, without leaving VR.',
+        'Connect accounts, tweak settings and even send chat messages from a menu on your wrist. No taking the headset off.',
     },
     {
       icon: 'filter',
       title: 'Banned-word filters',
       description:
-        'Separate block lists for TikTok and YouTube. Terms match anywhere in a message, ignoring case.',
+        'Separate block lists for TikTok and YouTube. A term gets caught anywhere in a message, and capital letters do not sneak past.',
     },
     {
       icon: 'sliders',
-      title: 'Bubble controls',
+      title: 'Bubbles your way',
       description:
-        'Choose a bubble color, lifetime and maximum count, keep bubbles centred, or lock them to your view. Pause or clear at any time.',
+        'Pick a color (default, gold, purple, green or rainbow), set how long bubbles stay, cap how many appear, keep them centred or lock them to your view. Pause or clear whenever.',
     },
     {
       icon: 'pause',
-      title: 'Pauses in public lobbies',
+      title: 'Behaves in public lobbies',
       description:
-        'The mod checks the lobby type and pauses itself in public lobbies, so bubbles only run where modded play is expected.',
+        'The mod checks the lobby and pauses itself in public ones, so the bubbles only show up where modded play belongs.',
     },
     {
       icon: 'key',
-      title: 'Simple activation',
+      title: 'One-time activation',
       description:
-        'Enter your license key once. It is remembered on your PC and accepted automatically on later launches.',
+        'Enter your license key once. Your PC remembers it and the mod accepts it automatically next time.',
     },
   ],
   steps: [
     {
-      title: 'Set up BepInEx',
-      body: 'TikTokBubbles is a BepInEx plugin, so Gorilla Tag needs BepInEx installed and run at least once.',
+      title: 'Get BepInEx on Gorilla Tag',
+      body: 'TikTokBubbles is a BepInEx plugin, so Gorilla Tag needs BepInEx installed and launched at least once.',
     },
     {
-      title: 'Get the mod file',
+      title: 'Grab the mod file',
       body: 'Download TikTokBubbles.dll from the release panel below.',
     },
     {
-      title: 'Place it in plugins',
+      title: 'Drop it in plugins',
       body: 'Copy the file into the BepInEx plugins folder inside your Gorilla Tag install.',
       code: 'Gorilla Tag\\BepInEx\\plugins\\TikTokBubbles.dll',
       codeLabel: 'Destination path',
     },
     {
-      title: 'Activate your license',
-      body: 'Launch the game and press TAB to open the license dialog. Enter your key; it is remembered on your PC afterwards.',
+      title: 'Unlock it with your key',
+      body: 'Launch the game and press TAB to open the license dialog. Enter your key once and your PC remembers it.',
       code: 'TAB',
       codeLabel: 'Open license dialog',
     },
     {
-      title: 'Connect your stream',
-      body: 'Open the wrist menu, type your TikTok username (without @) or YouTube handle, and connect while you are live.',
+      title: 'Go live and connect',
+      body: 'Open the wrist menu, type your TikTok username (no @) or YouTube handle, and connect while you are live. Bubbles incoming.',
     },
   ],
   faqs: [
     {
-      q: 'What does TikTokBubbles do?',
-      a: 'It reads your live TikTok and YouTube activity and shows it in Gorilla Tag as floating bubbles — chat, gifts, Super Chats and a live follower counter.',
+      q: 'What does TikTokBubbles actually do?',
+      a: 'It watches your live TikTok and YouTube activity and shows it in Gorilla Tag as floating bubbles: chat, gifts, Super Chats and a live follower counter.',
     },
     {
       q: 'Do I need a license key?',
-      a: 'Yes. The mod is in early access and asks for a license key through KeyAuth. The key is bound to your PC, entered once from the TAB dialog, and remembered afterwards. If you do not have one yet, contact the author.',
+      a: 'Yes. The mod is in early access and asks for a license key through KeyAuth. The key is tied to your PC, entered once with TAB, and remembered after that. No key yet? Ask the author.',
     },
     {
-      q: 'Does it work in public lobbies?',
-      a: 'No. The mod detects public lobbies and pauses itself there. It is meant for modded or private play.',
+      q: 'Will it work in public lobbies?',
+      a: 'Nope. The mod spots public lobbies and pauses itself. It is meant for modded or private play.',
     },
     {
       q: 'How do I connect my account?',
-      a: 'Open the wrist menu, enter your TikTok username without the @ (or your YouTube handle or live link), and press connect. Connect while you are live.',
+      a: 'Open the wrist menu, enter your TikTok username without the @ (or your YouTube handle or live link) and hit connect. Do it while you are live.',
     },
     {
-      q: 'Can I block words from showing up?',
-      a: 'Yes. The wrist menu has separate banned-word lists for TikTok and YouTube. Separate terms with commas or new lines; matching ignores case.',
+      q: 'Can I block certain words?',
+      a: 'Yes. The wrist menu has separate banned-word lists for TikTok and YouTube. Separate terms with commas or new lines. Capitals do not matter.',
     },
     {
-      q: 'Is this affiliated with Gorilla Tag or TikTok?',
-      a: 'No. TikTokBubbles is an independent project and is not affiliated with, endorsed by, or sponsored by Gorilla Tag or TikTok.',
+      q: 'Is this official?',
+      a: 'Not at all. TikTokBubbles is an independent project, not affiliated with or endorsed by Gorilla Tag or TikTok. The mod is made by Krox and this site is hosted by Owen.',
     },
   ],
 }
 
 export const navItems = [
-  { id: 'overview', label: 'Overview', icon: 'overview' },
-  { id: 'features', label: 'Features', icon: 'features' },
-  { id: 'preview', label: 'Preview', icon: 'preview' },
-  { id: 'installation', label: 'Installation', icon: 'install' },
-  { id: 'faq', label: 'FAQ', icon: 'faq' },
+  { to: '/', label: 'Home', icon: 'overview' },
+  { to: '/features', label: 'Features', icon: 'features' },
+  { to: '/preview', label: 'Preview', icon: 'preview' },
+  { to: '/install', label: 'Install', icon: 'install' },
+  { to: '/faq', label: 'FAQ', icon: 'faq' },
 ] as const
 
 export type NavIcon = (typeof navItems)[number]['icon']

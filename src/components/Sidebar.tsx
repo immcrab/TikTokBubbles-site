@@ -1,22 +1,17 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { navItems, site } from '../config/site'
 import { BubbleMark, Icon } from './Icon'
+import { Link, useRoute } from './router'
 
-export function Sidebar({
-  active,
-  open,
-  onClose,
-}: {
-  active: string
-  open: boolean
-  onClose: () => void
-}) {
+export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { path } = useRoute()
   const refs = useRef<Record<string, HTMLAnchorElement | null>>({})
   const [pos, setPos] = useState<{ y: number; h: number } | null>(null)
+  const active = navItems.find((n) => n.to === path)?.to ?? null
 
   useLayoutEffect(() => {
-    const el = refs.current[active]
-    if (el) setPos({ y: el.offsetTop, h: el.offsetHeight })
+    const el = active ? refs.current[active] : null
+    setPos(el ? { y: el.offsetTop, h: el.offsetHeight } : null)
   }, [active])
 
   const { links } = site
@@ -24,7 +19,7 @@ export function Sidebar({
     links.tiktok && { label: 'TikTok', href: links.tiktok },
     links.discord && { label: 'Discord', href: links.discord },
     links.support && { label: 'Support', href: links.support },
-    links.source && { label: 'Source', href: links.source },
+    links.source && { label: 'Site source', href: links.source },
   ].filter(Boolean) as { label: string; href: string }[]
 
   return (
@@ -43,7 +38,7 @@ export function Sidebar({
           open ? 'visible translate-x-0' : 'invisible -translate-x-full'
         }`}
       >
-        <a href="#overview" className="flex items-center gap-2.5 px-2 py-1 no-underline" onClick={onClose}>
+        <Link to="/" className="flex items-center gap-2.5 px-2 py-1 no-underline" onClick={onClose}>
           <BubbleMark />
           <span className="serif text-[22px] leading-none text-cream">{site.name}</span>
           {site.version && (
@@ -51,9 +46,9 @@ export function Sidebar({
               v{site.version}
             </span>
           )}
-        </a>
+        </Link>
 
-        <nav aria-label="Sections" className="relative mt-8 flex flex-col gap-0.5">
+        <nav aria-label="Pages" className="relative mt-8 flex flex-col gap-0.5">
           {pos && (
             <span
               aria-hidden="true"
@@ -62,19 +57,19 @@ export function Sidebar({
             />
           )}
           {navItems.map((n) => (
-            <a
-              key={n.id}
-              ref={(el) => {
-                refs.current[n.id] = el
+            <Link
+              key={n.to}
+              ref={(el: HTMLAnchorElement | null) => {
+                refs.current[n.to] = el
               }}
-              href={`#${n.id}`}
+              to={n.to}
               className="nav-link"
-              aria-current={active === n.id ? 'true' : undefined}
+              aria-current={active === n.to ? 'page' : undefined}
               onClick={onClose}
             >
               <Icon name={n.icon} size={16} />
               {n.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -85,10 +80,10 @@ export function Sidebar({
               Download
             </a>
           ) : (
-            <a href="#download" className="btn justify-center" onClick={onClose}>
+            <Link to="/install#download" className="btn btn-primary justify-center" onClick={onClose}>
               <Icon name="install" size={16} />
               Get the mod
-            </a>
+            </Link>
           )}
           {community.length > 0 && (
             <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 px-1">
@@ -107,7 +102,7 @@ export function Sidebar({
             </ul>
           )}
           <p className="m-0 border-t border-line px-1 pt-3 text-[11.5px] leading-snug text-muted">
-            Independent project by {site.author.name}.
+            Hosted by {site.host.name}. Mod by {site.author.name}. Independent project.
           </p>
         </div>
       </aside>

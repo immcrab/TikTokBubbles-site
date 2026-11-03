@@ -1,44 +1,25 @@
 import { useEffect, useState } from 'react'
-import { navItems, site } from './config/site'
+import { site } from './config/site'
 import { BubbleMark, Icon } from './components/Icon'
 import { Sidebar } from './components/Sidebar'
-import { Faq, Features, Footer, Hero, Installation, Preview } from './components/Sections'
+import { Link, RouterProvider, useRoute } from './components/router'
+import { FaqPage, FeaturesPage, Footer, Home, InstallPage, PreviewPage } from './components/Sections'
 
-const ids = navItems.map((n) => n.id)
-
-function useActiveSection() {
-  const [active, setActive] = useState<string>(ids[0])
-  useEffect(() => {
-    let raf = 0
-    const update = () => {
-      raf = 0
-      const line = window.innerHeight * 0.35
-      let cur = ids[0]
-      for (const id of ids) {
-        const el = document.getElementById(id)
-        if (el && el.getBoundingClientRect().top <= line) cur = id
-      }
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) cur = ids[ids.length - 1]
-      setActive(cur)
-    }
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update)
-    }
-    update()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-      if (raf) cancelAnimationFrame(raf)
-    }
-  }, [])
-  return active
+const titles: Record<string, string> = {
+  '/': 'TikTokBubbles — pop your stream into Gorilla Tag',
+  '/features': 'Features — TikTokBubbles',
+  '/preview': 'Preview — TikTokBubbles',
+  '/install': 'Install — TikTokBubbles',
+  '/faq': 'FAQ — TikTokBubbles',
 }
 
-export default function App() {
-  const active = useActiveSection()
+function Shell() {
+  const { path } = useRoute()
   const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    document.title = titles[path] ?? titles['/']
+  }, [path])
 
   useEffect(() => {
     if (!open) return
@@ -52,6 +33,9 @@ export default function App() {
     }
   }, [open])
 
+  const Page =
+    { '/features': FeaturesPage, '/preview': PreviewPage, '/install': InstallPage, '/faq': FaqPage }[path] ?? Home
+
   return (
     <>
       <a
@@ -60,13 +44,13 @@ export default function App() {
       >
         Skip to content
       </a>
-      <Sidebar active={active} open={open} onClose={() => setOpen(false)} />
+      <Sidebar open={open} onClose={() => setOpen(false)} />
 
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-line bg-side/95 px-4 backdrop-blur lg:hidden">
-        <a href="#overview" className="flex items-center gap-2 no-underline">
+        <Link to="/" className="flex items-center gap-2 no-underline">
           <BubbleMark size={24} />
           <span className="serif text-xl text-cream">{site.name}</span>
-        </a>
+        </Link>
         <button
           type="button"
           aria-label={open ? 'Close navigation' : 'Open navigation'}
@@ -79,14 +63,20 @@ export default function App() {
         </button>
       </header>
 
-      <main id="main" className="lg:pl-[230px]">
-        <Hero />
-        <Features />
-        <Preview />
-        <Installation />
-        <Faq />
+      <main id="main" className="min-h-[calc(100vh-4rem)] lg:pl-[230px]">
+        <div key={path} className="page-in">
+          <Page />
+        </div>
         <Footer />
       </main>
     </>
+  )
+}
+
+export default function App() {
+  return (
+    <RouterProvider>
+      <Shell />
+    </RouterProvider>
   )
 }

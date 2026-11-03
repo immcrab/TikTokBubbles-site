@@ -1,146 +1,186 @@
-import { useState, type CSSProperties } from 'react'
+import { useState, type CSSProperties, type ReactNode } from 'react'
 import { site } from '../config/site'
 import { BubbleMark, Icon } from './Icon'
+import { Link } from './router'
 import { CopyButton, ExternalLink, Reveal } from './ui'
 
 const hairline = 'border-t border-line'
+const vars = (o: Record<string, string | number>) => o as CSSProperties
 
-function Head({ eyebrow, title, children }: { eyebrow: string; title: React.ReactNode; children?: React.ReactNode }) {
+function PageHead({ eyebrow, title, children }: { eyebrow: string; title: ReactNode; children?: ReactNode }) {
   return (
-    <Reveal>
+    <header className="enter">
       <p className="eyebrow m-0">{eyebrow}</p>
-      <h2 className="section-title">{title}</h2>
+      <h1 className="section-title !mb-3 !text-[clamp(2.4rem,6vw,3.5rem)]">{title}</h1>
       {children && <p className="lead m-0">{children}</p>}
-    </Reveal>
+    </header>
   )
 }
 
-const bubbles: { s: number; x: string; y: string; dur: string; delay: string; dx: string; dy: string }[] = [
-  { s: 120, x: '8%', y: '12%', dur: '18s', delay: '0s', dx: '14px', dy: '-24px' },
-  { s: 54, x: '82%', y: '18%', dur: '14s', delay: '-4s', dx: '-10px', dy: '-22px' },
-  { s: 84, x: '90%', y: '56%', dur: '20s', delay: '-9s', dx: '-12px', dy: '-28px' },
-  { s: 36, x: '16%', y: '64%', dur: '13s', delay: '-6s', dx: '10px', dy: '-18px' },
-  { s: 160, x: '70%', y: '2%', dur: '19s', delay: '-11s', dx: '8px', dy: '-26px' },
+const page = 'mx-auto max-w-[860px] px-6 pb-16 pt-16 sm:pt-24'
+
+/* ---------------- Home ---------------- */
+
+const bubbles = [
+  { s: 130, x: '6%', y: '10%', dur: '17s', delay: '0s', dx: '14px', dy: '-26px' },
+  { s: 56, x: '84%', y: '16%', dur: '13s', delay: '-4s', dx: '-10px', dy: '-22px' },
+  { s: 92, x: '90%', y: '58%', dur: '19s', delay: '-9s', dx: '-12px', dy: '-28px' },
+  { s: 40, x: '14%', y: '66%', dur: '12s', delay: '-6s', dx: '10px', dy: '-18px' },
+  { s: 170, x: '68%', y: '0%', dur: '20s', delay: '-11s', dx: '8px', dy: '-26px' },
+  { s: 28, x: '30%', y: '8%', dur: '14s', delay: '-2s', dx: '-8px', dy: '-20px' },
+  { s: 64, x: '46%', y: '84%', dur: '16s', delay: '-7s', dx: '12px', dy: '-24px' },
 ]
 
-export function Hero() {
+const chips = [
+  { t: '+1 follower', x: '4%', y: '30%', delay: '-1s', dur: '11s' },
+  { t: 'CONGRATS!', x: '80%', y: '34%', delay: '-5s', dur: '13s' },
+  { t: 'Big gift', x: '12%', y: '72%', delay: '-8s', dur: '12s' },
+  { t: 'Super Chat', x: '76%', y: '76%', delay: '-3s', dur: '14s' },
+]
+
+const highlights = [
+  { to: '/features', icon: 'bubble', title: 'What it does', text: 'Bubbles for chat, gifts and followers.' },
+  { to: '/preview', icon: 'preview', title: 'See it', text: 'A peek at the bubbles in action.' },
+  { to: '/install', icon: 'install', title: 'Get it', text: 'Five steps and you are live.' },
+  { to: '/faq', icon: 'faq', title: 'Questions', text: 'Keys, lobbies, filters and more.' },
+] as const
+
+export function Home() {
   const { links } = site
-  const facts = [
-    ['Type', 'BepInEx plugin'],
-    ['Status', site.status],
-    ['Access', 'License key'],
-    ['By', `${site.author.name}`],
-  ]
   return (
-    <section id="overview" className="relative isolate overflow-hidden px-6 pb-24 pt-24 text-center sm:pt-32">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        {bubbles.map((b, i) => (
-          <span
-            key={i}
-            className="bubble-outline"
-            style={
-              {
-                width: b.s,
-                height: b.s,
-                left: b.x,
-                top: b.y,
-                '--dur': b.dur,
-                '--delay': b.delay,
-                '--dx': b.dx,
-                '--dy': b.dy,
-              } as CSSProperties
-            }
-          />
-        ))}
-        <div
-          className="absolute inset-0 opacity-[0.05]"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
-          }}
-        />
-      </div>
-
-      <div className="mx-auto max-w-[760px]">
-        <div className="enter mx-auto grid h-14 w-14 place-items-center rounded-full border border-line bg-raised/60" style={{ '--i': 0 } as CSSProperties}>
-          <BubbleMark size={30} />
-        </div>
-        <h1 className="serif enter mb-0 mt-8 text-[clamp(3rem,8vw,5.25rem)] leading-[1.02]" style={{ '--i': 1 } as CSSProperties}>
-          TikTok<em className="text-accent">Bubbles</em>
-        </h1>
-        <p className="enter mx-auto mb-0 mt-6 max-w-[34rem] text-[16px] text-muted" style={{ '--i': 2 } as CSSProperties}>
-          {site.description}
-        </p>
-        <div className="enter mt-9 flex flex-wrap items-center justify-center gap-3" style={{ '--i': 3 } as CSSProperties}>
-          {links.download ? (
-            <ExternalLink href={links.download} className="btn btn-primary" download>
-              <Icon name="install" size={16} />
-              Download
-            </ExternalLink>
-          ) : (
-            <a href="#installation" className="btn btn-primary">
-              Get started
-            </a>
-          )}
-          <a href="#features" className="btn">
-            See features
-          </a>
-          {links.tiktok && (
-            <ExternalLink href={links.tiktok}>
-              {site.author.handle}
-              <Icon name="external" size={14} />
-            </ExternalLink>
-          )}
+    <>
+      <section className="relative isolate overflow-hidden px-6 pb-20 pt-24 text-center sm:pt-32">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+          {bubbles.map((b, i) => (
+            <span
+              key={i}
+              className="bubble-outline"
+              style={vars({ width: b.s, height: b.s, left: b.x, top: b.y, '--dur': b.dur, '--delay': b.delay, '--dx': b.dx, '--dy': b.dy })}
+            />
+          ))}
+          {chips.map((c) => (
+            <span
+              key={c.t}
+              className="chip hidden sm:block"
+              style={vars({ left: c.x, top: c.y, '--dur': c.dur, '--delay': c.delay, '--dx': '6px', '--dy': '-14px' })}
+            >
+              {c.t}
+            </span>
+          ))}
         </div>
 
-        <dl
-          className="enter m-0 mt-16 grid grid-cols-2 overflow-hidden rounded-xl border border-line bg-side/60 text-left sm:grid-cols-4"
-          style={{ '--i': 4 } as CSSProperties}
-        >
-          {facts.map(([k, v], i) => (
-            <div key={k} className={`px-5 py-4 ${i > 0 ? 'sm:border-l' : ''} ${i % 2 === 1 ? 'border-l sm:border-l' : ''} ${i > 1 ? 'border-t sm:border-t-0' : ''} border-line`}>
+        <div className="mx-auto max-w-[760px]">
+          <div className="enter mx-auto grid h-16 w-16 place-items-center rounded-full border border-line bg-raised/70" style={vars({ '--i': 0 })}>
+            <BubbleMark size={34} />
+          </div>
+          <h1 className="serif enter mb-0 mt-8 text-[clamp(3rem,8vw,5.25rem)] leading-[1.02]" style={vars({ '--i': 1 })}>
+            TikTok<em className="text-accent">Bubbles</em>
+          </h1>
+          <p className="serif enter m-0 mt-3 text-[clamp(1.4rem,3vw,1.9rem)] italic text-cream/90" style={vars({ '--i': 2 })}>
+            {site.tagline}
+          </p>
+          <p className="enter mx-auto mb-0 mt-5 max-w-[34rem] text-[16px] text-muted" style={vars({ '--i': 3 })}>
+            {site.description}
+          </p>
+          <div className="enter mt-9 flex flex-wrap items-center justify-center gap-3" style={vars({ '--i': 4 })}>
+            {links.download ? (
+              <ExternalLink href={links.download} className="btn btn-primary" download>
+                <Icon name="install" size={16} />
+                Download
+              </ExternalLink>
+            ) : (
+              <Link to="/install" className="btn btn-primary">
+                Get started
+              </Link>
+            )}
+            <Link to="/features" className="btn">
+              See features
+            </Link>
+            {links.tiktok && (
+              <ExternalLink href={links.tiktok}>
+                {site.author.handle}
+                <Icon name="external" size={14} />
+              </ExternalLink>
+            )}
+          </div>
+          <p className="enter m-0 mt-5 text-[12px] text-muted/80" style={vars({ '--i': 5 })}>
+            Floating chips and bubbles are an illustration, not gameplay.
+          </p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[860px] px-6 pb-12">
+        <ul className="m-0 grid list-none gap-3 p-0 sm:grid-cols-2">
+          {highlights.map((h) => (
+            <Reveal as="li" key={h.to}>
+              <Link to={h.to} className="tile group">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-raised text-accent transition-colors duration-200 group-hover:bg-accent group-hover:text-bg">
+                  <Icon name={h.icon} size={18} />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-[15px] font-medium text-cream">{h.title}</span>
+                  <span className="block text-[13.5px] text-muted">{h.text}</span>
+                </span>
+                <Icon name="arrow" size={16} className="ml-auto shrink-0 text-muted transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-cream" />
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
+        <dl className="m-0 mt-8 grid grid-cols-2 overflow-hidden rounded-xl border border-line bg-side/60 text-left sm:grid-cols-4">
+          {[
+            ['Type', 'BepInEx plugin'],
+            ['Status', site.status],
+            ['Access', 'License key'],
+            ['By', site.author.name],
+          ].map(([k, v], i) => (
+            <div key={k} className={`border-line px-5 py-4 ${i % 2 === 1 ? 'border-l' : ''} ${i > 0 ? 'sm:border-l' : ''} ${i > 1 ? 'border-t sm:border-t-0' : ''}`}>
               <dt className="text-[11px] uppercase tracking-[0.12em] text-muted">{k}</dt>
               <dd className="m-0 mt-1 text-[14px] text-cream">{v}</dd>
             </div>
           ))}
         </dl>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
 
-export function Features() {
+/* ---------------- Features ---------------- */
+
+export function FeaturesPage() {
   return (
-    <section id="features" className="mx-auto max-w-[860px] px-6 py-20">
-      <Head eyebrow="Features" title={<>Built to stay <em className="text-accent">out of the way</em></>}>
-        Everything below comes straight from the mod itself.
-      </Head>
-      <ul className={`m-0 mt-12 grid list-none gap-x-14 p-0 md:grid-cols-2`}>
+    <section className={page}>
+      <PageHead eyebrow="Features" title={<>Tiny bubbles, <em className="text-accent">big energy</em></>}>
+        Everything here comes straight from the mod itself.
+      </PageHead>
+      <ul className="m-0 mt-12 grid list-none gap-x-14 p-0 md:grid-cols-2">
         {site.features.map((f) => (
           <Reveal as="li" key={f.title} className={`${hairline} flex gap-4 py-6`}>
-            <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line text-accent">
+            <span className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-raised text-accent">
               <Icon name={f.icon} size={18} />
             </span>
             <div>
-              <h3 className="m-0 text-[15px] font-medium text-cream">{f.title}</h3>
+              <h2 className="m-0 text-[15.5px] font-medium text-cream">{f.title}</h2>
               <p className="m-0 mt-1.5 text-[14px] text-muted">{f.description}</p>
             </div>
           </Reveal>
         ))}
       </ul>
+      <NextLink to="/install" label="Ready to try it? Installation" />
     </section>
   )
 }
 
-export function Preview() {
+/* ---------------- Preview ---------------- */
+
+export function PreviewPage() {
   const m = site.media
   const hasMedia = m.kind !== 'none' && m.src
   return (
-    <section id="preview" className="mx-auto max-w-[860px] px-6 py-20">
-      <Head eyebrow="Preview" title={<>See it <em className="text-accent">in the game</em></>} />
+    <section className={page}>
+      <PageHead eyebrow="Preview" title={<>Watch the <em className="text-accent">bubbles</em> float</>} />
       <Reveal className="mt-10">
         <figure className="m-0">
-          <div className="relative aspect-video overflow-hidden rounded-xl border border-line bg-side">
+          <div className="relative aspect-video overflow-hidden rounded-2xl border border-line bg-side">
             {hasMedia && m.kind === 'video' && (
               <video className="h-full w-full object-cover" src={m.src!} poster={m.poster ?? undefined} controls playsInline preload="metadata" />
             )}
@@ -152,43 +192,45 @@ export function Preview() {
                     { s: 96, x: '12%', y: '58%', dur: '15s', delay: '0s' },
                     { s: 52, x: '78%', y: '22%', dur: '13s', delay: '-5s' },
                     { s: 70, x: '66%', y: '64%', dur: '18s', delay: '-9s' },
+                    { s: 34, x: '30%', y: '18%', dur: '12s', delay: '-3s' },
                   ].map((b, i) => (
-                    <span
-                      key={i}
-                      className="bubble-outline"
-                      style={{ width: b.s, height: b.s, left: b.x, top: b.y, '--dur': b.dur, '--delay': b.delay, borderColor: 'rgb(194 173 136 / 0.22)' } as CSSProperties}
-                    />
+                    <span key={i} className="bubble-outline" style={vars({ width: b.s, height: b.s, left: b.x, top: b.y, '--dur': b.dur, '--delay': b.delay })} />
                   ))}
                 </div>
                 <div className="relative">
-                  <p className="serif m-0 text-[24px] text-cream sm:text-[30px]">Gameplay preview coming soon</p>
-                  <p className="m-0 mt-2 text-[13.5px] text-muted">Real footage will appear here once it is added.</p>
+                  <p className="serif m-0 text-[24px] text-cream sm:text-[32px]">Gameplay preview coming soon</p>
+                  <p className="m-0 mt-2 text-[13.5px] text-muted">The real clip is still being cooked. Meanwhile, enjoy these free-range bubbles.</p>
                 </div>
                 <span className="absolute bottom-3 right-3 rounded-full border border-line bg-bg/70 px-2.5 py-1 text-[11px] text-muted">
-                  Visual demo — not gameplay
+                  Visual demo, not gameplay
                 </span>
               </div>
             )}
           </div>
-          <figcaption className="mt-3 text-[13px] text-muted">{hasMedia ? m.caption : 'Placeholder panel. Add footage in src/config/site.ts.'}</figcaption>
+          <figcaption className="mt-3 text-[13px] text-muted">
+            {hasMedia ? m.caption : 'Placeholder panel. Footage can be added in src/config/site.ts.'}
+          </figcaption>
         </figure>
       </Reveal>
+      <NextLink to="/install" label="Want it? Installation" />
     </section>
   )
 }
 
-export function Installation() {
+/* ---------------- Install ---------------- */
+
+export function InstallPage() {
   return (
-    <section id="installation" className="mx-auto max-w-[760px] px-6 py-20">
-      <Head eyebrow="Installation" title={<>Up and running in <em className="text-accent">five steps</em></>}>
+    <section className={`${page} max-w-[760px]`}>
+      <PageHead eyebrow="Install" title={<>Five steps to <em className="text-accent">bubble time</em></>}>
         You need BepInEx for Gorilla Tag and a license key.
-      </Head>
+      </PageHead>
       <ol className="m-0 mt-12 list-none p-0">
         {site.steps.map((s, i) => (
-          <Reveal as="li" key={s.title} className={`${hairline} grid grid-cols-[2.5rem_1fr] gap-x-2 py-6`}>
-            <span className="serif pt-0.5 text-[28px] leading-none text-accent/80">{String(i + 1).padStart(2, '0')}</span>
+          <Reveal as="li" key={s.title} className={`${hairline} grid grid-cols-[2.75rem_1fr] gap-x-2 py-6`}>
+            <span className="serif pt-0.5 text-[30px] leading-none text-accent">{i + 1}</span>
             <div className="min-w-0">
-              <h3 className="m-0 text-[15px] font-medium text-cream">{s.title}</h3>
+              <h2 className="m-0 text-[15.5px] font-medium text-cream">{s.title}</h2>
               <p className="m-0 mt-1.5 text-[14px] text-muted">{s.body}</p>
               {s.code && (
                 <div className="mt-4 flex items-center justify-between gap-3 rounded-lg border border-line bg-side py-1.5 pl-4 pr-1.5">
@@ -244,9 +286,9 @@ function Download() {
             </ExternalLink>
           ) : (
             <>
-              <span className="text-[13.5px] text-muted">The public download link has not been published yet.</span>
+              <span className="text-[13.5px] text-muted">The public download link is not out yet.</span>
               {links.tiktok && (
-                <ExternalLink href={links.tiktok}>
+                <ExternalLink href={links.tiktok} className="btn btn-primary">
                   Ask {site.author.handle} on TikTok
                   <Icon name="external" size={14} />
                 </ExternalLink>
@@ -255,37 +297,39 @@ function Download() {
           )}
         </div>
         <p className="m-0 mt-6 border-t border-line pt-5 text-[13px] text-muted">
-          Early access requires a license key, entered once with TAB in game and tied to your PC. Keys are issued by the author.
+          Early access needs a license key, entered once with TAB in game and tied to your PC. Keys come from the author.
         </p>
       </div>
     </Reveal>
   )
 }
 
-export function Faq() {
+/* ---------------- FAQ ---------------- */
+
+export function FaqPage() {
   const [open, setOpen] = useState<number | null>(0)
   return (
-    <section id="faq" className="mx-auto max-w-[760px] px-6 py-20">
-      <Head eyebrow="FAQ" title={<>Good to <em className="text-accent">know</em></>} />
+    <section className={`${page} max-w-[760px]`}>
+      <PageHead eyebrow="FAQ" title={<>Questions? <em className="text-accent">Pop one in.</em></>} />
       <Reveal className="mt-10">
         <div className="border-b border-line">
           {site.faqs.map((f, i) => {
             const isOpen = open === i
             return (
               <div key={f.q} className={hairline}>
-                <h3 className="m-0">
+                <h2 className="m-0">
                   <button
                     type="button"
                     id={`faq-b-${i}`}
                     aria-expanded={isOpen}
                     aria-controls={`faq-p-${i}`}
                     onClick={() => setOpen(isOpen ? null : i)}
-                    className="flex w-full cursor-pointer items-center justify-between gap-6 bg-transparent py-5 text-left text-[15px] font-medium text-cream transition-colors duration-200 hover:text-white"
+                    className="flex w-full cursor-pointer items-center justify-between gap-6 bg-transparent py-5 text-left text-[15.5px] font-medium text-cream transition-colors duration-200 hover:text-accent"
                   >
                     {f.q}
                     <span className="text-muted"><Icon name={isOpen ? 'minus' : 'plus'} size={16} /></span>
                   </button>
-                </h3>
+                </h2>
                 <div id={`faq-p-${i}`} role="region" aria-labelledby={`faq-b-${i}`} className="faq-panel" data-open={isOpen}>
                   <div>
                     <p className="m-0 max-w-[40rem] pb-5 text-[14px] text-muted">{f.a}</p>
@@ -300,20 +344,37 @@ export function Faq() {
   )
 }
 
+function NextLink({ to, label }: { to: string; label: string }) {
+  return (
+    <div className="mt-14">
+      <Link to={to} className="btn">
+        {label}
+        <Icon name="arrow" size={15} />
+      </Link>
+    </div>
+  )
+}
+
+/* ---------------- Footer ---------------- */
+
 export function Footer() {
   const { links } = site
   const items = [
     links.tiktok && ['TikTok', links.tiktok],
     links.discord && ['Discord', links.discord],
     links.support && ['Support', links.support],
-    links.source && ['Source', links.source],
+    links.source && ['Site source', links.source],
   ].filter(Boolean) as [string, string][]
   return (
-    <footer className="mx-auto max-w-[760px] px-6 pb-14 pt-6">
+    <footer className="mx-auto max-w-[860px] px-6 pb-14 pt-6">
       <div className={`${hairline} flex flex-col gap-3 pt-6 text-[12.5px] text-muted sm:flex-row sm:items-center sm:justify-between`}>
-        <p className="m-0 max-w-md">
-          {site.name} is an independent project and is not affiliated with Gorilla Tag or TikTok.
-        </p>
+        <div>
+          <p className="m-0 text-cream">
+            Hosted by {site.host.link ? <a href={site.host.link} className="underline underline-offset-4">{site.host.name}</a> : site.host.name}
+            <span className="text-muted"> · Mod by {site.author.name}</span>
+          </p>
+          <p className="m-0 mt-1 max-w-md">{site.name} is an independent project, not affiliated with Gorilla Tag or TikTok.</p>
+        </div>
         {items.length > 0 && (
           <ul className="m-0 flex list-none gap-5 p-0">
             {items.map(([l, h]) => (

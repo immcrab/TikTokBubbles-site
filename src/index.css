@@ -4,13 +4,13 @@
 @import '@fontsource-variable/inter';
 
 @theme {
-  --color-bg: #1c1b18;
-  --color-side: #23221f;
-  --color-raised: #2a2925;
-  --color-line: #3b3831;
-  --color-cream: #e6dfd0;
-  --color-muted: #a49a88;
-  --color-accent: #c2ad88;
+  --color-bg: #0e1527;
+  --color-side: #131c33;
+  --color-raised: #1a2645;
+  --color-line: #2b3b66;
+  --color-cream: #e6edff;
+  --color-muted: #93a4cc;
+  --color-accent: #6fb0ff;
   --font-serif: 'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
   --font-sans: 'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
@@ -38,7 +38,7 @@ body {
   overflow-x: hidden;
 }
 ::selection {
-  background: rgb(194 173 136 / 0.3);
+  background: rgb(111 176 255 / 0.3);
 }
 
 :focus-visible {
@@ -87,7 +87,7 @@ html.anim .reveal.in {
 .bubble-outline {
   position: absolute;
   border-radius: 9999px;
-  border: 1px solid rgb(230 223 208 / 0.1);
+  border: 1px solid rgb(160 200 255 / 0.1);
   animation: drift var(--dur, 16s) ease-in-out infinite;
   animation-delay: var(--delay, 0s);
 }
@@ -98,8 +98,8 @@ html.anim .reveal.in {
   width: 22%;
   height: 22%;
   border-radius: 9999px;
-  border-top: 1px solid rgb(230 223 208 / 0.12);
-  border-left: 1px solid rgb(230 223 208 / 0.12);
+  border-top: 1px solid rgb(160 200 255 / 0.12);
+  border-left: 1px solid rgb(160 200 255 / 0.12);
 }
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -138,7 +138,7 @@ html.anim .reveal.in {
 }
 .btn:hover {
   background: var(--color-raised);
-  border-color: #4b473d;
+  border-color: #3f5590;
   transform: translateY(-1px);
 }
 .btn:active {
@@ -146,12 +146,12 @@ html.anim .reveal.in {
 }
 .btn-primary {
   background: var(--color-cream);
-  color: #1c1b18;
+  color: #0e1527;
   border-color: var(--color-cream);
 }
 .btn-primary:hover {
-  background: #f0e9da;
-  border-color: #f0e9da;
+  background: #ffffff;
+  border-color: #ffffff;
 }
 
 .nav-link {
@@ -202,3 +202,34 @@ html.anim .reveal.in {
 .faq-panel > div {
   overflow: hidden;
 }
+
+/* fun additions */
+@keyframes pagein { from { opacity: 0; transform: translateY(8px); } }
+.page-in { animation: pagein 420ms var(--ease-out-soft) both; }
+.bubble-outline {
+  border-color: rgb(111 176 255 / 0.28) !important;
+  background: radial-gradient(circle at 30% 28%, rgb(111 176 255 / 0.16), rgb(111 176 255 / 0.03) 60%, transparent 70%);
+}
+.chip {
+  position: absolute;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  color: var(--color-cream);
+  background: rgb(26 38 69 / 0.8);
+  border: 1px solid rgb(111 176 255 / 0.35);
+  animation: drift var(--dur, 12s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+.tile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--color-line);
+  background: var(--color-side);
+  text-decoration: none;
+  transition: border-color 200ms var(--ease-out-soft), background-color 200ms var(--ease-out-soft), transform 200ms var(--ease-out-soft);
+}
+.tile:hover { border-color: var(--color-accent); background: var(--color-raised); transform: translateY(-2px); }
